@@ -10,7 +10,7 @@ steps:
         --no-allow-unauthenticated --retry --trigger-service-account="$$TRIGGER_SA" --run-service-account="$$RUN_SA"
         --service-account="$$FUNCTION_SA" 
         --set-env-vars="PROJECT_ID=$$PROJECT_ID,LOG_SEVERITY=$$LOG_SEVERITY,LOG_PREFIX=$$LOG_PREFIX"
-        --clear-labels --update-labels="managed_by=manual,app=log-func"
+        --clear-labels --update-labels="managed_by=cloud-build,app=log-func"
     env:
       - 'PROJECT_ID=$PROJECT_ID'
       - 'TOPIC=$_TOPIC'
