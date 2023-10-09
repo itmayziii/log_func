@@ -1,0 +1,28 @@
+steps:
+  - id: 'deploy-cloud-function'
+    name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: 'sh'
+    args:
+      - '-c'
+      - >
+        gcloud functions deploy log-func --project="$$PROJECT_ID" --gen2 --trigger-topic="$$TOPIC" --runtime="go121"
+        --entry-point="Log" --region="$$REGION" --source="." --ingress-settings="internal-only"
+        --no-allow-unauthenticated --retry --trigger-service-account="$$TRIGGER_SA" --run-service-account="$$RUN_SA"
+        --service-account="$$FUNCTION_SA" 
+        --set-env-vars="PROJECT_ID=$$PROJECT_ID,LOG_SEVERITY=$$LOG_SEVERITY,LOG_PREFIX=$$LOG_PREFIX"
+        --clear-labels --update-labels="managed_by=manual,app=log-func"
+    env:
+      - 'PROJECT_ID=$PROJECT_ID'
+      - 'TOPIC=$_TOPIC'
+      - 'REGION=$_REGION'
+      - 'TRIGGER_SA=$_TRIGGER_SA'
+      - 'RUN_SA=$_RUN_SA'
+      - 'FUNCTION_SA=$_FUNCTION_SA'
+      - 'LOG_SEVERITY=$_LOG_SEVERITY'
+      - 'LOG_PREFIX=dead letter'
+    waitFor: ['-'] # Run immediately
+
+options:
+  logging: 'CLOUD_LOGGING_ONLY'
+tags: ['deploy', 'app-log-func', 'cloud-function']
+timeout: '600s' # 10 minutes
