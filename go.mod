@@ -5,7 +5,7 @@ go 1.21
 require (
 	cloud.google.com/go/logging v1.8.1
 	github.com/GoogleCloudPlatform/functions-framework-go v1.8.0
-	github.com/cloudevents/sdk-go/v2 v2.14.0
+	github.com/cloudevents/sdk-go/v2 v2.15.2
 	github.com/joho/godotenv v1.5.1
 )
 
